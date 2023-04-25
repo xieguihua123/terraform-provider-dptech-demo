@@ -2,7 +2,7 @@
 terraform {
  required_providers {
   provider={
-     source = "dptech/edu/hashicups-pf"
+     source = "registry.terraform.io/edu/hashicups-pf"
      version = "1.0.1"
    } 
  }
