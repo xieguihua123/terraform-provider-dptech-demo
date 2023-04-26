@@ -1,15 +1,17 @@
 
 terraform {
  required_providers {
-  provider={
-     source = "github.com/xieguihua123/dptech-demo"
-     version = "1.0.1"
+  dptech-demo={
+     source = "xieguihua123/dptech-demo"
+     version = "1.2.4"
    } 
  }
  }
- 
-provider "provider" {
+
+provider "dptech-demo" {
   address="localhost"
-  name="a"
 }
- 
+
+ resource "dptech-demo_example" "dptech-demo" {
+  uuid_count = "3"
+}

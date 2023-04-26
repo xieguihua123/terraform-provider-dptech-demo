@@ -21,7 +21,7 @@ func main() {
 	flag.Parse()
 
 	opts := providerserver.ServeOpts{
-		Address: "github.com/xieguihua123/dptech-demo",
+		Address: "xieguihua123/dptech-demo",
 		Debug:   debug,
 	}
 

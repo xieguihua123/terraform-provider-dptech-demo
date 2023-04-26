@@ -32,7 +32,7 @@ type ScaffoldingProviderModel struct {
 }
 
 func (p *ScaffoldingProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
-	resp.TypeName = "scaffolding"
+	resp.TypeName = "dptech-demo"
 	fmt.Println("111111111111111111111111111111111")
 }
 
