@@ -1,3 +1,3 @@
-resource "scaffolding_example" "example" {
-  configurable_attribute = "some-value"
+resource "dptech_example" "provider" {
+  uuid_count = "2"
 }
