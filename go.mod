@@ -1,4 +1,4 @@
-module terraform-provider-hashicups-pf
+module terraform-provider-dptech-demo
 
 go 1.19
 

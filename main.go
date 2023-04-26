@@ -5,7 +5,7 @@ import (
 	"flag"
 	"log"
 
-	"terraform-provider-hashicups-pf/provider"
+	"terraform-provider-dptech-demo/provider"
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 )
@@ -21,7 +21,7 @@ func main() {
 	flag.Parse()
 
 	opts := providerserver.ServeOpts{
-		Address: "registry.terraform.io/edu/hashicups-pf",
+		Address: "github.com/xieguihua123/dptech-demo",
 		Debug:   debug,
 	}
 
