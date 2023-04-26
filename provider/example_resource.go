@@ -82,7 +82,6 @@ func (r *ExampleResource) Create(ctx context.Context, req resource.CreateRequest
 		return
 	}
 	uuid_count := data.uuid_count
-
 	respn, err := http.Get(sdata.Address.String() + "dev-api/add/" + uuid_count.String())
 	if err != nil {
 		log.Fatal(err)
