@@ -23,7 +23,7 @@ func NewExampleResource() resource.Resource {
 
 // ExampleResource defines the resource implementation.
 type ExampleResource struct {
-	client *http.Client
+	client *Client
 }
 
 // ExampleResourceModel describes the resource data model.
@@ -56,8 +56,11 @@ func (r *ExampleResource) Configure(ctx context.Context, req resource.ConfigureR
 	if req.ProviderData == nil {
 		return
 	}
-	client, ok := req.ProviderData.(*http.Client)
+	client, ok := req.ProviderData.(*Client)
 
+	if req.ProviderData == nil {
+		return
+	}
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Resource Configure Type",
