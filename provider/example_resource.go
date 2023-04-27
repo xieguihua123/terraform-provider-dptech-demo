@@ -38,13 +38,11 @@ func (r *ExampleResource) Metadata(ctx context.Context, req resource.MetadataReq
 
 func (r *ExampleResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Example resource",
 		Attributes: map[string]schema.Attribute{
 			"uuid_count": schema.StringAttribute{
-				MarkdownDescription: "Example configurable attribute with default value",
-				Optional:            true,
-				Computed:            true,
-				Default:             stringdefault.StaticString("8"),
+				Computed: true,
+				Required: true,
+				Default:  stringdefault.StaticString("8"),
 			},
 		},
 	}
@@ -80,8 +78,8 @@ func (r *ExampleResource) Create(ctx context.Context, req resource.CreateRequest
 		return
 	}
 	tflog.Trace(ctx, "creating a resource ")
-	uuid_count := data.uuid_count
-	respn, err := http.Get(r.client.HostURL + "/dev-api/add/" + uuid_count.String())
+	uuid_count := data.uuid_count.ValueString()
+	respn, err := http.Get(r.client.HostURL + "/dev-api/add/" + uuid_count)
 	if err != nil {
 		tflog.Info(ctx, " Create Error"+err.Error())
 	}
