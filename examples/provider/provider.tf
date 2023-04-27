@@ -2,15 +2,15 @@
 terraform {
  required_providers {
   dptech-demo={
-     source = "github.com/xieguihua123/dptech-demo"
-     version = "1.2.6"
+     source = "xieguihua123/dptech-demo"
+     version = "1.2.7"
    } 
  }
  }
 
 provider "dptech-demo" {
-  address="localhost"
-  name=""
+  address="Http://localhost:19090"
+  name="123"
 }
 
 

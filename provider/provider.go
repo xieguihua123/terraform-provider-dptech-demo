@@ -72,18 +72,18 @@ func (p *ScaffoldingProvider) Configure(ctx context.Context, req provider.Config
 		return
 	}
 	tflog.Info(ctx, address)
-	// client, err := NewClient(&address)
-	// if err != nil {
-	// 	resp.Diagnostics.AddError(
-	// 		"Unable to Create HashiCups API Client",
-	// 		"An unexpected error occurred when creating the HashiCups API client. "+
-	// 			"If the error is not clear, please contact the provider developers.\n\n"+
-	// 			"HashiCups Client Error: "+err.Error(),
-	// 	)
-	// 	return
-	// }
-	// resp.DataSourceData = client
-	// resp.ResourceData = client
+	client, err := NewClient(&address)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Unable to Create HashiCups API Client",
+			"An unexpected error occurred when creating the HashiCups API client. "+
+				"If the error is not clear, please contact the provider developers.\n\n"+
+				"HashiCups Client Error: "+err.Error(),
+		)
+		return
+	}
+	resp.DataSourceData = client
+	resp.ResourceData = client
 }
 
 func (p *ScaffoldingProvider) Resources(ctx context.Context) []func() resource.Resource {
