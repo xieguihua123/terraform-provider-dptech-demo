@@ -82,6 +82,7 @@ func (p *ScaffoldingProvider) Configure(ctx context.Context, req provider.Config
 		)
 		return
 	}
+
 	resp.DataSourceData = client
 	resp.ResourceData = client
 }
