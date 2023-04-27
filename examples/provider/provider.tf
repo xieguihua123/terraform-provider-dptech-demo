@@ -2,8 +2,8 @@
 terraform {
  required_providers {
   dptech-demo={
-     source = "xieguihua123/dptech-demo"
-     version = "1.2.9"
+     source = "registry.terraform.io/xieguihua123/dptech-demo"
+     version = "1.2.15"
    } 
  }
  }
