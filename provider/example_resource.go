@@ -3,7 +3,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -33,12 +32,12 @@ type ExampleResourceModel struct {
 }
 
 func (r *ExampleResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_example"
+	// resp.TypeName = req.ProviderTypeName + "_example"
+	resp.TypeName = "dptech-demo_example"
 }
 
 func (r *ExampleResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		// This description is used by the documentation generator and the language server.
 		MarkdownDescription: "Example resource",
 
 		Attributes: map[string]schema.Attribute{
@@ -84,7 +83,7 @@ func (r *ExampleResource) Create(ctx context.Context, req resource.CreateRequest
 	uuid_count := data.uuid_count
 	respn, err := http.Get(sdata.Address.String() + "dev-api/add/" + uuid_count.String())
 	if err != nil {
-		log.Fatal(err)
+		tflog.Info(ctx, " Create Error"+err.Error())
 	}
 	defer respn.Body.Close()
 
@@ -99,6 +98,7 @@ func (r *ExampleResource) Create(ctx context.Context, req resource.CreateRequest
 }
 
 func (r *ExampleResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var sdata *ScaffoldingProviderModel
 	var data *ExampleResourceModel
 
 	// Read Terraform prior state data into the model
@@ -107,7 +107,12 @@ func (r *ExampleResource) Read(ctx context.Context, req resource.ReadRequest, re
 	if resp.Diagnostics.HasError() {
 		return
 	}
-
+	uuid_count := data.uuid_count
+	respn, err := http.Get(sdata.Address.String() + "dev-api/add/" + uuid_count.String())
+	if err != nil {
+		tflog.Info(ctx, " Create Error"+err.Error())
+	}
+	defer respn.Body.Close()
 	// If applicable, this is a great opportunity to initialize any necessary
 	// provider client data and make a call using it.
 	// httpResp, err := r.client.Do(httpReq)

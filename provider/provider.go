@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
@@ -59,7 +58,7 @@ func (p *ScaffoldingProvider) Configure(ctx context.Context, req provider.Config
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	address := os.Getenv("HASHICUPS_address")
+	address := ""
 	if !data.Address.IsNull() {
 		address = data.Address.ValueString()
 	}
@@ -72,19 +71,19 @@ func (p *ScaffoldingProvider) Configure(ctx context.Context, req provider.Config
 		tflog.Info(ctx, "address is NULL")
 		return
 	}
-
-	client, err := NewClient(&address)
-	if err != nil {
-		resp.Diagnostics.AddError(
-			"Unable to Create HashiCups API Client",
-			"An unexpected error occurred when creating the HashiCups API client. "+
-				"If the error is not clear, please contact the provider developers.\n\n"+
-				"HashiCups Client Error: "+err.Error(),
-		)
-		return
-	}
-	resp.DataSourceData = client
-	resp.ResourceData = client
+	tflog.Info(ctx, address)
+	// client, err := NewClient(&address)
+	// if err != nil {
+	// 	resp.Diagnostics.AddError(
+	// 		"Unable to Create HashiCups API Client",
+	// 		"An unexpected error occurred when creating the HashiCups API client. "+
+	// 			"If the error is not clear, please contact the provider developers.\n\n"+
+	// 			"HashiCups Client Error: "+err.Error(),
+	// 	)
+	// 	return
+	// }
+	// resp.DataSourceData = client
+	// resp.ResourceData = client
 }
 
 func (p *ScaffoldingProvider) Resources(ctx context.Context) []func() resource.Resource {
