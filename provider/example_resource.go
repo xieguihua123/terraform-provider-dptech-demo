@@ -40,7 +40,6 @@ func (r *ExampleResource) Schema(ctx context.Context, req resource.SchemaRequest
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"uuid_count": schema.StringAttribute{
-				Computed: true,
 				Required: true,
 				Default:  stringdefault.StaticString("8"),
 			},
