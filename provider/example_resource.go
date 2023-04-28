@@ -75,8 +75,8 @@ func (r *ExampleResource) Create(ctx context.Context, req resource.CreateRequest
 		return
 	}
 	tflog.Trace(ctx, "creating a resource ")
-	uuid_count := data.uuid_count.ValueString()
-	respn, err := http.Get(r.client.HostURL + "/dev-api/add/" + uuid_count)
+	uuid_countValue := data.uuid_count.ValueString()
+	respn, err := http.Get(r.client.HostURL + "/dev-api/add/" + uuid_countValue)
 	if err != nil {
 		tflog.Info(ctx, " Create Error"+err.Error())
 	}
@@ -102,8 +102,8 @@ func (r *ExampleResource) Read(ctx context.Context, req resource.ReadRequest, re
 		return
 	}
 	tflog.Info(ctx, " read Start")
-	uuid_count := data.uuid_count
-	respn, err := http.Get(r.client.HostURL + "dev-api/add/" + uuid_count.String())
+	uuid_countValue := data.uuid_count.ValueString()
+	respn, err := http.Get(r.client.HostURL + "dev-api/add/" + uuid_countValue)
 	if err != nil {
 		tflog.Info(ctx, " read Error"+err.Error())
 	}
