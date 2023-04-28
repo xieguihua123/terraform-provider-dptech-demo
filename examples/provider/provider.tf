@@ -3,7 +3,7 @@ terraform {
  required_providers {
   dptech-demo={
      source = "registry.terraform.io/xieguihua123/dptech-demo"
-     version = "1.2.22"
+     version = "1.2.23"
    } 
  }
  }
@@ -15,5 +15,5 @@ provider "dptech-demo" {
 }
 
  resource "dptech-demo_example" "a" {
-      uuid_count="3"
+  uuid_count="3"
 }

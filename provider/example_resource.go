@@ -27,7 +27,7 @@ type ExampleResource struct {
 
 // ExampleResourceModel describes the resource data model.
 type ExampleResourceModel struct {
-	uuid_count types.String `tfsdk:"uuid_count"`
+	Uuid_count types.String `tfsdk:"uuid_count"`
 }
 
 func (r *ExampleResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -75,7 +75,7 @@ func (r *ExampleResource) Create(ctx context.Context, req resource.CreateRequest
 		return
 	}
 	tflog.Trace(ctx, "creating a resource ")
-	uuid_countValue := data.uuid_count.ValueString()
+	uuid_countValue := data.Uuid_count.ValueString()
 	respn, err := http.Get(r.client.HostURL + "/dev-api/add/" + uuid_countValue)
 	if err != nil {
 		tflog.Info(ctx, " Create Error"+err.Error())
@@ -102,7 +102,7 @@ func (r *ExampleResource) Read(ctx context.Context, req resource.ReadRequest, re
 		return
 	}
 	tflog.Info(ctx, " read Start")
-	uuid_countValue := data.uuid_count.ValueString()
+	uuid_countValue := data.Uuid_count.ValueString()
 	respn, err := http.Get(r.client.HostURL + "dev-api/add/" + uuid_countValue)
 	if err != nil {
 		tflog.Info(ctx, " read Error"+err.Error())
