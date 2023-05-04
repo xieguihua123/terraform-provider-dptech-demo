@@ -2,7 +2,6 @@ package provider
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
@@ -22,20 +21,20 @@ type ScaffoldingProvider struct {
 
 // ScaffoldingProviderModel describes the provider data model.
 type ScaffoldingProviderModel struct {
-	Name    types.String `tfsdk:"name"`
+	Port    types.String `tfsdk:"port"`
 	Address types.String `tfsdk:"address"`
 }
 
 func (p *ScaffoldingProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
 	resp.TypeName = "dptech-demo"
-	fmt.Println("111111111111111111111111111111111")
+	tflog.Info(ctx, "Metadata*************")
 }
 
 func (p *ScaffoldingProvider) Schema(ctx context.Context, req provider.SchemaRequest, resp *provider.SchemaResponse) {
-	fmt.Println("111111111111111111111111111111111")
+	tflog.Info(ctx, "Schema*************")
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
-			"name": schema.StringAttribute{
+			"port": schema.StringAttribute{
 				MarkdownDescription: "  provider attribute",
 				Optional:            true,
 			}, "address": schema.StringAttribute{
@@ -50,24 +49,25 @@ func (p *ScaffoldingProvider) Configure(ctx context.Context, req provider.Config
 	var data ScaffoldingProviderModel
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
-	fmt.Println("111111111111111111111111111111111")
+	tflog.Info(ctx, "Configure*************")
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	address := ""
+	address, port := "", ""
 	if !data.Address.IsNull() {
 		address = data.Address.ValueString()
 	}
 
-	if data.Name.IsNull() {
-		tflog.Info(ctx, "Name is NULL")
+	if data.Port.IsNull() {
+		tflog.Info(ctx, "Port is NULL")
 		return
 	}
 	if data.Address.IsNull() {
-		tflog.Info(ctx, "address is NULL")
+		tflog.Info(ctx, "Address is NULL")
 		return
 	}
-	tflog.Info(ctx, address)
+	tflog.Info(ctx, address+port)
+	address = address + port
 	client, err := NewClient(&address)
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -78,7 +78,6 @@ func (p *ScaffoldingProvider) Configure(ctx context.Context, req provider.Config
 		)
 		return
 	}
-
 	resp.DataSourceData = client
 	resp.ResourceData = client
 }

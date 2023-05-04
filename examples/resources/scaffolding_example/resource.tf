@@ -1,3 +1,3 @@
-resource "dptech_example" "provider" {
-  uuid_count = "2"
+ resource "dptech-demo_example" "cs" {
+  uuid_count="4"
 }
