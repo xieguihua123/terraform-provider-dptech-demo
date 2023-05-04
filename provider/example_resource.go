@@ -77,46 +77,46 @@ func (r *ExampleResource) Schema(ctx context.Context, req resource.SchemaRequest
 					"weight": schema.StringAttribute{
 						Optional: true,
 					},
-					"connectionLimit": schema.StringAttribute{
+					"connection_limit": schema.StringAttribute{
 						Optional: true,
 					},
-					"connectionRateLimit": schema.StringAttribute{
+					"connection_rate_limit": schema.StringAttribute{
 						Optional: true,
 					},
-					"recoveryTime": schema.StringAttribute{
+					"recovery_time": schema.StringAttribute{
 						Optional: true,
 					},
-					"warmTime": schema.StringAttribute{
+					"warm_time": schema.StringAttribute{
 						Optional: true,
 					},
 					"monitor": schema.StringAttribute{
 						Optional: true,
 					},
-					"monitorList": schema.StringAttribute{
+					"monitor_list": schema.StringAttribute{
 						Optional: true,
 					},
-					"leastNumber": schema.StringAttribute{
+					"least_number": schema.StringAttribute{
 						Optional: true,
 					},
 					"priority": schema.StringAttribute{
 						Optional: true,
 					},
-					"monitorLog": schema.StringAttribute{
+					"monitor_log": schema.StringAttribute{
 						Optional: true,
 					},
-					"simulTunnelsLimit": schema.StringAttribute{
+					"simul_tunnels_limit": schema.StringAttribute{
 						Optional: true,
 					},
-					"cpuWeight": schema.StringAttribute{
+					"cpu_weight": schema.StringAttribute{
 						Optional: true,
 					},
-					"memoryWeight": schema.StringAttribute{
+					"memory_weight": schema.StringAttribute{
 						Optional: true,
 					},
 					"state": schema.StringAttribute{
 						Optional: true,
 					},
-					"vsysName": schema.StringAttribute{
+					"vsys_name": schema.StringAttribute{
 						Optional: true,
 					},
 				},
