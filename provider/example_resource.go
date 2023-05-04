@@ -38,20 +38,20 @@ type RealServiceParameter struct {
 	Address             types.String `tfsdk:"address"`
 	Port                types.String `tfsdk:"port"`
 	Weight              types.String `tfsdk:"weight"`
-	ConnectionLimit     types.String `tfsdk:"connectionLimit"`
-	ConnectionRateLimit types.String `tfsdk:"connectionRateLimit"`
-	RecoveryTime        types.String `tfsdk:"recoveryTime"`
-	WarmTime            types.String `tfsdk:"warmTime"`
+	ConnectionLimit     types.String `tfsdk:"connection_limit"`
+	ConnectionRateLimit types.String `tfsdk:"connection_rate_limit"`
+	RecoveryTime        types.String `tfsdk:"recovery_time"`
+	WarmTime            types.String `tfsdk:"warm_time"`
 	Monitor             types.String `tfsdk:"monitor"`
-	MonitorList         types.String `tfsdk:"monitorList"`
-	LeastNumber         types.String `tfsdk:"leastNumber"`
+	MonitorList         types.String `tfsdk:"monitor_list"`
+	LeastNumber         types.String `tfsdk:"least_number"`
 	Priority            types.String `tfsdk:"priority"`
-	MonitorLog          types.String `tfsdk:"monitorLog"`
-	SimulTunnelsLimit   types.String `tfsdk:"simulTunnelsLimit"`
-	CpuWeight           types.String `tfsdk:"cpuWeight"`
-	MemoryWeight        types.String `tfsdk:"memoryWeight"`
+	MonitorLog          types.String `tfsdk:"monitor_log"`
+	SimulTunnelsLimit   types.String `tfsdk:"simul_tunnels_limit"`
+	CpuWeight           types.String `tfsdk:"cpu_weight"`
+	MemoryWeight        types.String `tfsdk:"memory_weight"`
 	State               types.String `tfsdk:"state"`
-	VsysName            types.String `tfsdk:"vsysName"`
+	VsysName            types.String `tfsdk:"vsys_name"`
 }
 
 func (r *ExampleResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
