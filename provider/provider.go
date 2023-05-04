@@ -57,7 +57,9 @@ func (p *ScaffoldingProvider) Configure(ctx context.Context, req provider.Config
 	if !data.Address.IsNull() {
 		address = data.Address.ValueString()
 	}
-
+	if !data.Port.IsNull() {
+		port = data.Port.ValueString()
+	}
 	if data.Port.IsNull() {
 		tflog.Info(ctx, "Port is NULL")
 		return
