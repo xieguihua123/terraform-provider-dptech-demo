@@ -21,8 +21,9 @@ type ScaffoldingProvider struct {
 
 // ScaffoldingProviderModel describes the provider data model.
 type ScaffoldingProviderModel struct {
-	Port    types.String `tfsdk:"port"`
-	Address types.String `tfsdk:"address"`
+	Port          types.String `tfsdk:"port"`
+	Address       types.String `tfsdk:"address"`
+	Authorization types.String `tfsdk:"authorization"`
 }
 
 func (p *ScaffoldingProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
@@ -40,6 +41,9 @@ func (p *ScaffoldingProvider) Schema(ctx context.Context, req provider.SchemaReq
 			}, "address": schema.StringAttribute{
 				MarkdownDescription: "  provider attribute",
 				Optional:            true,
+			}, "authorization": schema.StringAttribute{
+				MarkdownDescription: "  provider attribute",
+				Optional:            true,
 			},
 		},
 	}
@@ -53,13 +57,17 @@ func (p *ScaffoldingProvider) Configure(ctx context.Context, req provider.Config
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	address, port := "", ""
+	address, port, authorization := "", "", ""
 	if !data.Address.IsNull() {
 		address = data.Address.ValueString()
 	}
 	if !data.Port.IsNull() {
 		port = data.Port.ValueString()
 	}
+	if !data.Authorization.IsNull() {
+		authorization = data.Authorization.ValueString()
+	}
+
 	if data.Port.IsNull() {
 		tflog.Info(ctx, "Port is NULL")
 		return
@@ -68,9 +76,13 @@ func (p *ScaffoldingProvider) Configure(ctx context.Context, req provider.Config
 		tflog.Info(ctx, "Address is NULL")
 		return
 	}
-	tflog.Info(ctx, address+port)
+	if data.Authorization.IsNull() {
+		tflog.Info(ctx, "Authorization is NULL")
+		return
+	}
+	tflog.Info(ctx, address+port+authorization)
 	address = address + port
-	client, err := NewClient(&address)
+	client, err := NewClient(&address, &authorization)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Unable to Create HashiCups API Client",
