@@ -37,21 +37,21 @@ type RealServiceParameter struct {
 	Name                types.String `tfsdk:"name" json:"name"`
 	Address             types.String `tfsdk:"address" json:"address"`
 	Port                types.String `tfsdk:"port" json:"port"`
-	Weight              types.String `tfsdk:"weight" json:"weight"`
-	ConnectionLimit     types.String `tfsdk:"connection_limit" json:"connectionLimit"`
-	ConnectionRateLimit types.String `tfsdk:"connection_rate_limit" json:"connectionRateLimit"`
-	RecoveryTime        types.String `tfsdk:"recovery_time" json:"recoveryTime"`
-	WarmTime            types.String `tfsdk:"warm_time" json:"warmTime"`
-	Monitor             types.String `tfsdk:"monitor" json:"monitor"`
-	MonitorList         types.String `tfsdk:"monitor_list" json:"monitorList"`
-	LeastNumber         types.String `tfsdk:"least_number" json:"leastNumber"`
-	Priority            types.String `tfsdk:"priority" json:"priority"`
-	MonitorLog          types.String `tfsdk:"monitor_log" json:"monitorLog"`
-	SimulTunnelsLimit   types.String `tfsdk:"simul_tunnels_limit" json:"simulTunnelsLimit"`
-	CpuWeight           types.String `tfsdk:"cpu_weight" json:"cpuWeight"`
-	MemoryWeight        types.String `tfsdk:"memory_weight" json:"memoryWeight"`
-	State               types.String `tfsdk:"state" json:"state"`
-	VsysName            types.String `tfsdk:"vsys_name" json:"vsysName"`
+	Weight              types.String `tfsdk:"weight" json:"weight,omitempty"`
+	ConnectionLimit     types.String `tfsdk:"connection_limit" json:"connectionLimit,omitempty"`
+	ConnectionRateLimit types.String `tfsdk:"connection_rate_limit" json:"connectionRateLimit,omitempty"`
+	RecoveryTime        types.String `tfsdk:"recovery_time" json:"recoveryTime,omitempty"`
+	WarmTime            types.String `tfsdk:"warm_time" json:"warmTime,omitempty"`
+	Monitor             types.String `tfsdk:"monitor" json:"monitor,omitempty"`
+	MonitorList         types.String `tfsdk:"monitor_list" json:"monitorList,omitempty"`
+	LeastNumber         types.String `tfsdk:"least_number" json:"leastNumber,omitempty"`
+	Priority            types.String `tfsdk:"priority" json:"priority,omitempty"`
+	MonitorLog          types.String `tfsdk:"monitor_log" json:"monitorLog,omitempty"`
+	SimulTunnelsLimit   types.String `tfsdk:"simul_tunnels_limit" json:"simulTunnelsLimit,omitempty"`
+	CpuWeight           types.String `tfsdk:"cpu_weight" json:"cpuWeight,omitempty"`
+	MemoryWeight        types.String `tfsdk:"memory_weight" json:"memoryWeight,omitempty"`
+	State               types.String `tfsdk:"state" json:"state,omitempty"`
+	VsysName            types.String `tfsdk:"vsys_name" json:"vsysName,omitempty"`
 }
 
 func (r *ExampleResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -219,7 +219,28 @@ func (r *ExampleResource) ImportState(ctx context.Context, req resource.ImportSt
 }
 func sendToweb_main(ctx context.Context, c *Client, Rsinfo RealServiceParameter) {
 
-	body, _ := json.Marshal(Rsinfo)
+	sendData := RealServiceRequestModel{
+		Name:                Rsinfo.Name.ValueString(),
+		Address:             Rsinfo.Address.ValueString(),
+		Port:                Rsinfo.Port.ValueString(),
+		Weight:              Rsinfo.Weight.ValueString(),
+		ConnectionLimit:     Rsinfo.ConnectionLimit.ValueString(),
+		ConnectionRateLimit: Rsinfo.ConnectionRateLimit.ValueString(),
+		RecoveryTime:        Rsinfo.RecoveryTime.ValueString(),
+		WarmTime:            Rsinfo.WarmTime.ValueString(),
+		Monitor:             Rsinfo.Monitor.ValueString(),
+		MonitorList:         Rsinfo.MonitorList.ValueString(),
+		LeastNumber:         Rsinfo.LeastNumber.ValueString(),
+		Priority:            Rsinfo.Priority.ValueString(),
+		MonitorLog:          Rsinfo.MonitorLog.ValueString(),
+		SimulTunnelsLimit:   Rsinfo.SimulTunnelsLimit.ValueString(),
+		CpuWeight:           Rsinfo.CpuWeight.ValueString(),
+		MemoryWeight:        Rsinfo.MemoryWeight.ValueString(),
+		State:               Rsinfo.State.ValueString(),
+		VsysName:            Rsinfo.VsysName.ValueString(),
+	}
+
+	body, _ := json.Marshal(sendData)
 	targetUrl := c.HostURL + "/func/web_main/api/slb/adx_slb/adx_slb_rs/rsinfo"
 	req, _ := http.NewRequest("POST", targetUrl, bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")

@@ -29,6 +29,27 @@ type AuthResponse struct {
 	Token    string `json:"token"`
 }
 
+type RealServiceRequestModel struct {
+	Name                string `json:"name"`
+	Address             string `json:"address"`
+	Port                string `json:"port"`
+	Weight              string `json:"weight,omitempty"`
+	ConnectionLimit     string `json:"connectionLimit,omitempty"`
+	ConnectionRateLimit string `json:"connectionRateLimit,omitempty"`
+	RecoveryTime        string `json:"recoveryTime,omitempty"`
+	WarmTime            string `json:"warmTime,omitempty"`
+	Monitor             string `json:"monitor,omitempty"`
+	MonitorList         string `json:"monitorList,omitempty"`
+	LeastNumber         string `json:"leastNumber,omitempty"`
+	Priority            string `json:"priority,omitempty"`
+	MonitorLog          string `json:"monitorLog,omitempty"`
+	SimulTunnelsLimit   string `json:"simulTunnelsLimit,omitempty"`
+	CpuWeight           string `json:"cpuWeight,omitempty"`
+	MemoryWeight        string `json:"memoryWeight,omitempty"`
+	State               string `json:"state,omitempty"`
+	VsysName            string `json:"vsysName,omitempty"`
+}
+
 func NewClient(host *string, auth *AuthStruct) (*Client, error) {
 	c := Client{
 		HTTPClient: &http.Client{Timeout: 10 * time.Second},

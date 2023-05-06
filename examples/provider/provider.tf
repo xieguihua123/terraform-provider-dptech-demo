@@ -3,16 +3,16 @@ terraform {
  required_providers {
   dptech-demo={
      source = "registry.terraform.io/xieguihua123/dptech-demo"
-     version = "1.2.29"
+     version = "1.2.30"
    } 
  }
  }
 
 provider "dptech-demo" {
   address="http://localhost:"
-  port="80"
+  port="8080"
   username="test"
-  Password="jsepc123!"
+  password="jsepc123!"
 }
 
  resource "dptech-demo_RealService" "cs" {
