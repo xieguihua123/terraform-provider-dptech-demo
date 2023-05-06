@@ -1,7 +1,6 @@
 package provider
 
 import (
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -58,25 +57,22 @@ func NewClient(host *string, auth *AuthStruct) (*Client, error) {
 		Auth:    *auth,
 	}
 
-	req, err := http.NewRequest("POST", c.HostURL, nil)
-	req.Header.Add("Content-type", "application/json")
-	req.Header.Set("Accept", "application/json")
-	req.SetBasicAuth(c.Auth.Username, c.Auth.Password)
-
-	if err != nil {
-		return nil, err
-	}
-
-	body, err := c.doRequest(req)
-	if err != nil {
-		return nil, err
-	}
-
-	ar := AuthResponse{}
-	err = json.Unmarshal(body, &ar)
-	if err != nil {
-		return nil, err
-	}
+	// req, err := http.NewRequest("POST", c.HostURL, nil)
+	// req.Header.Add("Content-type", "application/json")
+	// req.Header.Set("Accept", "application/json")
+	// req.SetBasicAuth(c.Auth.Username, c.Auth.Password)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// body, err := c.doRequest(req)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// ar := AuthResponse{}
+	// err = json.Unmarshal(body, &ar)
+	// if err != nil {
+	// 	return nil, err
+	// }
 
 	return &c, nil
 }
