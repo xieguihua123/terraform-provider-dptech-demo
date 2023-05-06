@@ -29,16 +29,18 @@ type AuthResponse struct {
 	Token    string `json:"token"`
 }
 
-func NewClient(host *string, authorization *string) (*Client, error) {
+func NewClient(host *string, auth *AuthStruct) (*Client, error) {
 	c := Client{
 		HTTPClient: &http.Client{Timeout: 10 * time.Second},
 		// Default Hashicups URL
 		HostURL: *host,
-		Token:   *authorization,
+		Auth:    *auth,
 	}
 
 	req, err := http.NewRequest("POST", c.HostURL, nil)
-	req.Header.Add("Content-type", "application/json;charset=utf-8")
+	req.Header.Add("Content-type", "application/json")
+	req.Header.Set("Accept", "application/json")
+	req.SetBasicAuth(c.Auth.Username, c.Auth.Password)
 
 	if err != nil {
 		return nil, err
@@ -59,8 +61,6 @@ func NewClient(host *string, authorization *string) (*Client, error) {
 }
 
 func (c *Client) doRequest(req *http.Request) ([]byte, error) {
-	req.Header.Set("Authorization", c.Token)
-
 	res, err := c.HTTPClient.Do(req)
 	if err != nil {
 		return nil, err

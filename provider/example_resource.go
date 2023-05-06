@@ -221,10 +221,10 @@ func sendToweb_main(ctx context.Context, c *Client, Rsinfo RealServiceParameter)
 
 	body, _ := json.Marshal(Rsinfo)
 	targetUrl := c.HostURL + "/func/web_main/api/slb/adx_slb/adx_slb_rs/rsinfo"
-	req, _ := http.NewRequest("PUT", targetUrl, bytes.NewBuffer(body))
+	req, _ := http.NewRequest("POST", targetUrl, bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", c.Token)
-
+	req.Header.Set("Accept", "application/json")
+	req.SetBasicAuth(c.Auth.Username, c.Auth.Password)
 	respn, err := http.DefaultClient.Do(req)
 	if err != nil {
 		tflog.Info(ctx, " read Error"+err.Error())

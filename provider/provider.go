@@ -21,9 +21,10 @@ type ScaffoldingProvider struct {
 
 // ScaffoldingProviderModel describes the provider data model.
 type ScaffoldingProviderModel struct {
-	Port          types.String `tfsdk:"port"`
-	Address       types.String `tfsdk:"address"`
-	Authorization types.String `tfsdk:"authorization"`
+	Port     types.String `tfsdk:"port"`
+	Address  types.String `tfsdk:"address"`
+	Username types.String `tfsdk:"username"`
+	Password types.String `tfsdk:"password"`
 }
 
 func (p *ScaffoldingProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
@@ -41,7 +42,10 @@ func (p *ScaffoldingProvider) Schema(ctx context.Context, req provider.SchemaReq
 			}, "address": schema.StringAttribute{
 				MarkdownDescription: "  provider attribute",
 				Optional:            true,
-			}, "authorization": schema.StringAttribute{
+			}, "username": schema.StringAttribute{
+				MarkdownDescription: "  provider attribute",
+				Optional:            true,
+			}, "password": schema.StringAttribute{
 				MarkdownDescription: "  provider attribute",
 				Optional:            true,
 			},
@@ -57,15 +61,18 @@ func (p *ScaffoldingProvider) Configure(ctx context.Context, req provider.Config
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	address, port, authorization := "", "", ""
+	address, port, name, password := "", "", "", ""
 	if !data.Address.IsNull() {
 		address = data.Address.ValueString()
 	}
 	if !data.Port.IsNull() {
 		port = data.Port.ValueString()
 	}
-	if !data.Authorization.IsNull() {
-		authorization = data.Authorization.ValueString()
+	if !data.Username.IsNull() {
+		name = data.Username.ValueString()
+	}
+	if !data.Password.IsNull() {
+		password = data.Password.ValueString()
 	}
 
 	if data.Port.IsNull() {
@@ -76,13 +83,20 @@ func (p *ScaffoldingProvider) Configure(ctx context.Context, req provider.Config
 		tflog.Info(ctx, "Address is NULL")
 		return
 	}
-	if data.Authorization.IsNull() {
-		tflog.Info(ctx, "Authorization is NULL")
+	if data.Username.IsNull() {
+		tflog.Info(ctx, "Username is NULL")
 		return
 	}
-	tflog.Info(ctx, address+port+authorization)
+	if data.Password.IsNull() {
+		tflog.Info(ctx, "Password is NULL")
+		return
+	}
+	tflog.Info(ctx, address+port+name+password)
 	address = address + port
-	client, err := NewClient(&address, &authorization)
+
+	autha := AuthStruct{Username: name, Password: password}
+
+	client, err := NewClient(&address, &autha)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Unable to Create HashiCups API Client",
