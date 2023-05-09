@@ -15,20 +15,20 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &ExampleResource{}
-var _ resource.ResourceWithImportState = &ExampleResource{}
+var _ resource.Resource = &RealServiceResource{}
+var _ resource.ResourceWithImportState = &RealServiceResource{}
 
-func NewExampleResource() resource.Resource {
-	return &ExampleResource{}
+func NewRealServiceResource() resource.Resource {
+	return &RealServiceResource{}
 }
 
 // ExampleResource defines the resource implementation.
-type ExampleResource struct {
+type RealServiceResource struct {
 	client *Client
 }
 
 // ExampleResourceModel describes the resource data model.
-type ExampleResourceModel struct {
+type RealServiceResourceModel struct {
 	// Uuid_count types.String `tfsdk:"uuid_count"`
 	Rsinfo RealServiceParameter `tfsdk:"rsinfo"`
 }
@@ -54,12 +54,11 @@ type RealServiceParameter struct {
 	VsysName            types.String `tfsdk:"vsys_name" json:"vsysName,omitempty"`
 }
 
-func (r *ExampleResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	// resp.TypeName = req.ProviderTypeName + "_example"
+func (r *RealServiceResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = "dptech-demo_RealService"
 }
 
-func (r *ExampleResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *RealServiceResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"rsinfo": schema.SingleNestedAttribute{
@@ -125,7 +124,7 @@ func (r *ExampleResource) Schema(ctx context.Context, req resource.SchemaRequest
 	}
 }
 
-func (r *ExampleResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *RealServiceResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -147,28 +146,21 @@ func (r *ExampleResource) Configure(ctx context.Context, req resource.ConfigureR
 	r.client = client
 }
 
-func (r *ExampleResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *ExampleResourceModel
+func (r *RealServiceResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *RealServiceResourceModel
 	// Read Terraform plan data into the model
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	tflog.Trace(ctx, "creating a resource ")
-
-	// For the purposes of this example code, hardcoding a response value to
-	// save into the Terraform state.
-	// Write logs using the tflog package
-	// Documentation: https://terraform.io/plugin/log
 	tflog.Trace(ctx, "created a resource")
-
+	sendToweb_RealServiceRequest(ctx, "POST", r.client, data.Rsinfo)
 	// Save data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *ExampleResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *ExampleResourceModel
-
+func (r *RealServiceResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *RealServiceResourceModel
 	// Read Terraform prior state data into the model
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
@@ -176,29 +168,27 @@ func (r *ExampleResource) Read(ctx context.Context, req resource.ReadRequest, re
 		return
 	}
 	tflog.Info(ctx, " read Start")
-	sendToweb_main(ctx, r.client, data.Rsinfo)
-	// Save updated data into Terraform state
+	// sendToweb_RealServiceRequest(ctx,"POST", r.client, data.Rsinfo)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *ExampleResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *ExampleResourceModel
-
-	// Read Terraform prior state data into the model
+func (r *RealServiceResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *RealServiceResourceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
-
 	if resp.Diagnostics.HasError() {
 		return
 	}
 	tflog.Info(ctx, " Update Start ************")
-	sendToweb_main(ctx, r.client, data.Rsinfo)
-	// Save updated data into Terraform state
+	sendToweb_RealServiceRequest(ctx, "PUT", r.client, data.Rsinfo)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *ExampleResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *ExampleResourceModel
+func (r *RealServiceResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *RealServiceResourceModel
 	tflog.Info(ctx, " Delete Start")
+
+	sendToweb_RealServiceRequest(ctx, "DELETE", r.client, data.Rsinfo)
+
 	// Read Terraform prior state data into the model
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
@@ -214,11 +204,11 @@ func (r *ExampleResource) Delete(ctx context.Context, req resource.DeleteRequest
 	// }
 }
 
-func (r *ExampleResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *RealServiceResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
-func sendToweb_main(ctx context.Context, c *Client, Rsinfo RealServiceParameter) {
 
+func sendToweb_RealServiceRequest(ctx context.Context, reqmethod string, c *Client, Rsinfo RealServiceParameter) {
 	sendData := RealServiceRequestModel{
 		Name:                Rsinfo.Name.ValueString(),
 		Address:             Rsinfo.Address.ValueString(),
@@ -239,10 +229,10 @@ func sendToweb_main(ctx context.Context, c *Client, Rsinfo RealServiceParameter)
 		State:               Rsinfo.State.ValueString(),
 		VsysName:            Rsinfo.VsysName.ValueString(),
 	}
-
 	body, _ := json.Marshal(sendData)
 	targetUrl := c.HostURL + "/func/web_main/api/slb/adx_slb/adx_slb_rs/rsinfo"
-	req, _ := http.NewRequest("POST", targetUrl, bytes.NewBuffer(body))
+
+	req, _ := http.NewRequest(reqmethod, targetUrl, bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Accept", "application/json")
 	req.SetBasicAuth(c.Auth.Username, c.Auth.Password)

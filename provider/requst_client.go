@@ -49,6 +49,36 @@ type RealServiceRequestModel struct {
 	VsysName            string `json:"vsysName,omitempty"`
 }
 
+type RealServiceListRequestModel struct {
+	Name     string `json:"name"`
+	Monitor  string `json:"monitor,omitempty"`
+	RsList   string `json:"rsList,omitempty"`
+	Schedule string `json:"schedule,omitempty"`
+}
+
+type AddrPoolRequestModel struct {
+	Name       string `json:"name"`
+	IpVersion  string `json:"ipVersion,omitempty"`
+	IpStart    string `json:"ipStart"`
+	IpEnd      string `json:"ipEnd"`
+	VrrpIfName string `json:"vrrpIfName,omitempty"` //接口名称
+	VrrpId     string `json:"vrrpId,omitempty"`     //vrid
+}
+type VirtualServiceRequestModel struct {
+	Name        string `json:"name"`
+	State       string `json:"state"`
+	Mode        string `json:"mode"`
+	Ip          string `json:"ip"`
+	Port        string `json:"port"`
+	Protocol    string `json:"protocol"`
+	SessionKeep string `json:"sessionKeep"`
+	DefaultPool string `json:"defaultPool"`
+	TcpPolicy   string `json:"tcpPolicy"` //引用tcp超时时间，不引用默认600s
+	Snat        string `json:"snat"`
+	SessionBkp  string `json:"sessionBkp"` //必须配置集群模式
+	Vrrp        string `json:"vrrp"`       //涉及普通双机热备场景，需要关联具体的vrrp组
+}
+
 func NewClient(host *string, auth *AuthStruct) (*Client, error) {
 	c := Client{
 		HTTPClient: &http.Client{Timeout: 10 * time.Second},
