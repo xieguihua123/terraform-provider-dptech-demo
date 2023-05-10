@@ -51,12 +51,19 @@ type RealServiceRequestModel struct {
 	State               string `json:"state,omitempty"`
 	VsysName            string `json:"vsysName,omitempty"`
 }
+type RealServiceListRequest struct {
+	Poollist RealServiceListRequestModel `json:"poollist"`
+}
 
 type RealServiceListRequestModel struct {
 	Name     string `json:"name"`
 	Monitor  string `json:"monitor,omitempty"`
 	RsList   string `json:"rsList,omitempty"`
 	Schedule string `json:"schedule,omitempty"`
+}
+
+type AddrPoolRequest struct {
+	Addrpoollist AddrPoolRequestModel `json:"addrpoollist"`
 }
 
 type AddrPoolRequestModel struct {
@@ -67,6 +74,11 @@ type AddrPoolRequestModel struct {
 	VrrpIfName string `json:"vrrpIfName,omitempty"` //接口名称
 	VrrpId     string `json:"vrrpId,omitempty"`     //vrid
 }
+
+type VirtualServiceRequest struct {
+	Virtualservice VirtualServiceRequestModel `json:"virtualservice"`
+}
+
 type VirtualServiceRequestModel struct {
 	Name        string `json:"name"`
 	State       string `json:"state"`

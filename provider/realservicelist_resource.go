@@ -159,7 +159,12 @@ func sendToweb_RealServiceListRequest(ctx context.Context, reqmethod string, c *
 		RsList:   datamodel.RsList.ValueString(),
 		Schedule: datamodel.Schedule.ValueString(),
 	}
-	body, _ := json.Marshal(sendData)
+
+	requstData := RealServiceListRequest{
+		Poollist: sendData,
+	}
+	body, _ := json.Marshal(requstData)
+
 	targetUrl := c.HostURL + "/func/web_main/api/slb/pool/adx_slb_pool/poollist"
 
 	req, _ := http.NewRequest(reqmethod, targetUrl, bytes.NewBuffer(body))

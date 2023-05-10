@@ -199,7 +199,12 @@ func sendToweb_VirtualServiceRequest(ctx context.Context, reqmethod string, c *C
 		SessionBkp:  Rsinfo.SessionBkp.ValueString(),
 		Vrrp:        Rsinfo.Vrrp.ValueString(),
 	}
-	body, _ := json.Marshal(sendData)
+
+	requstData := VirtualServiceRequest{
+		Virtualservice: sendData,
+	}
+
+	body, _ := json.Marshal(requstData)
 	targetUrl := c.HostURL + "/func/web_main/api/slb/vs/virtual/virtualservice"
 
 	req, _ := http.NewRequest(reqmethod, targetUrl, bytes.NewBuffer(body))

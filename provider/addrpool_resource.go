@@ -30,7 +30,7 @@ type AddrPoolResource struct {
 // ExampleResourceModel describes the resource data model.
 type AddrPoolResourceModel struct {
 	// Uuid_count types.String `tfsdk:"uuid_count"`
-	Rsinfo AddrPoolParameter `tfsdk:"rsinfo"`
+	Addrpoollist AddrPoolParameter `tfsdk:"addrpoollist"`
 }
 
 type AddrPoolParameter struct {
@@ -43,13 +43,13 @@ type AddrPoolParameter struct {
 }
 
 func (r *AddrPoolResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "dptech-demo_AddrPool"
+	resp.TypeName = "dptech-demo_AddrPoolList"
 }
 
 func (r *AddrPoolResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
-			"rsinfo": schema.SingleNestedAttribute{
+			"addrpoollist": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"name": schema.StringAttribute{
@@ -106,7 +106,7 @@ func (r *AddrPoolResource) Create(ctx context.Context, req resource.CreateReques
 		return
 	}
 	tflog.Trace(ctx, "created a resource")
-	sendToweb_AddrPoolRequest(ctx, "POST", r.client, data.Rsinfo)
+	sendToweb_AddrPoolRequest(ctx, "POST", r.client, data.Addrpoollist)
 	// Save data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -131,7 +131,7 @@ func (r *AddrPoolResource) Update(ctx context.Context, req resource.UpdateReques
 		return
 	}
 	tflog.Info(ctx, " Update Start ************")
-	sendToweb_AddrPoolRequest(ctx, "PUT", r.client, data.Rsinfo)
+	sendToweb_AddrPoolRequest(ctx, "PUT", r.client, data.Addrpoollist)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -139,7 +139,7 @@ func (r *AddrPoolResource) Delete(ctx context.Context, req resource.DeleteReques
 	var data *AddrPoolResourceModel
 	tflog.Info(ctx, " Delete Start")
 
-	sendToweb_AddrPoolRequest(ctx, "DELETE", r.client, data.Rsinfo)
+	sendToweb_AddrPoolRequest(ctx, "DELETE", r.client, data.Addrpoollist)
 
 	// Read Terraform prior state data into the model
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
@@ -169,7 +169,11 @@ func sendToweb_AddrPoolRequest(ctx context.Context, reqmethod string, c *Client,
 		VrrpIfName: Rsinfo.VrrpIfName.ValueString(),
 		VrrpId:     Rsinfo.VrrpId.ValueString(),
 	}
-	body, _ := json.Marshal(sendData)
+	requstData := AddrPoolRequest{
+		Addrpoollist: sendData,
+	}
+
+	body, _ := json.Marshal(requstData)
 	targetUrl := c.HostURL + "/func/web_main/api/addrpool/addrpool/addrpoollist"
 
 	req, _ := http.NewRequest(reqmethod, targetUrl, bytes.NewBuffer(body))
