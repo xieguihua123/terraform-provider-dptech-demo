@@ -229,7 +229,10 @@ func sendToweb_RealServiceRequest(ctx context.Context, reqmethod string, c *Clie
 		State:               Rsinfo.State.ValueString(),
 		VsysName:            Rsinfo.VsysName.ValueString(),
 	}
-	body, _ := json.Marshal(sendData)
+	requstData := RealServiceRequest{
+		Rsinfo: sendData,
+	}
+	body, _ := json.Marshal(requstData)
 	targetUrl := c.HostURL + "/func/web_main/api/slb/adx_slb/adx_slb_rs/rsinfo"
 
 	req, _ := http.NewRequest(reqmethod, targetUrl, bytes.NewBuffer(body))

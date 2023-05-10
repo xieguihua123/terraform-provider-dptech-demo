@@ -27,6 +27,9 @@ type AuthResponse struct {
 	Username string `json:"username`
 	Token    string `json:"token"`
 }
+type RealServiceRequest struct {
+	Rsinfo RealServiceRequestModel `json:"rsinfo"`
+}
 
 type RealServiceRequestModel struct {
 	Name                string `json:"name"`
