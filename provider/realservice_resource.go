@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -244,4 +245,9 @@ func sendToweb_RealServiceRequest(ctx context.Context, reqmethod string, c *Clie
 		tflog.Info(ctx, " read Error"+err.Error())
 	}
 	defer respn.Body.Close()
+
+	body, err2 := ioutil.ReadAll(respn.Body)
+	if err2 == nil {
+		fmt.Println(string(body))
+	}
 }
