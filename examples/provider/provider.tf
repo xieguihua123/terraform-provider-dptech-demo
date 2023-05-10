@@ -3,7 +3,7 @@ terraform {
  required_providers {
   dptech-demo={
      source = "registry.terraform.io/xieguihua123/dptech-demo"
-     version = "1.2.35"
+     version = "1.2.36"
    } 
  }
  }
@@ -23,23 +23,34 @@ resource "dptech-demo_RealService" "cs" {
 }
 }
 
-resource "dptech-demo_RealServiceList" "cs" {
+resource "dptech-demo_RealServiceList" "cs2" {
  poollist={
-  name="string"
+  name="string__*"
   monitor="string"
   rs_list="string"
   schedule="string"
  }
 }
 
+resource "dptech-demo_AddrPoolList" "cs" {
+addrpoollist={
+  name="string__*"
+  ip_start="string__*"
+  	ip_end="string__*"
+	ip_version="string"
+	vrrp_if_name="string"//接口名称
+	vrrp_id="string"    //vrid
+} 
+}
+
 resource "dptech-demo_VirtualService" "cs" {
   virtualservice={
-  name ="string"
-	state ="string"
-	mode ="string"
-	ip ="string"
-	port ="string"
+  name ="string__*"
+	mode ="string__*"
+	ip ="string__*"
+	port ="string__*"
 	protocol ="string"
+  state ="string"
 	session_keep ="string"
 	default_pool ="string"
 	tcp_policy ="string"
@@ -49,14 +60,4 @@ resource "dptech-demo_VirtualService" "cs" {
 }
 }
 
-resource "dptech-demo_AddrPoolList" "cs" {
-addrpoollist={
-  name="string"
-	ip_version="string"
-	ip_start="string"
-	ip_end="string"
-	vrrp_if_name="string"//接口名称
-	vrrp_id="string"    //vrid
-} 
-}
 
